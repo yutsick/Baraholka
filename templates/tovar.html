@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+    {% block center %}
+	  <div id="center" class="column">
+          <h1>{{ tovar.name }}</h1>
+
+	  	<div id="content">
+			<h3>Опис товару</h3>
+			<p>{{ tovar.description }} <br /></p>
+            {% if user.is_authenticated %}
+                <p>useroni</p>
+            {% else %}
+                <p>Nema user</p>
+            {% endif %}
+
+            <div class="stuff">
+		    	<img src="{% static "media/images/title3.gif"%}" alt="" width="540" height="26" class="pad25" />
+		    	<span>{{ tovar.price }}</span>
+        	</div>
+
+		</div>
+	  </div>
+    {% endblock %}
+
+
+
