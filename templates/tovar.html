@@ -8,6 +8,10 @@
 	  	<div id="content">
 			<h3>Опис товару</h3>
 			<p>{{ tovar.description }} <br /></p>
+            {% for picture in tovar.pictures_set.all %}
+            <span style="padding: 10px"><img src ="{% static "media/"%}{{ picture }}" width="180"></span>
+
+        {% endfor %}
             {% if user.is_authenticated %}
                 <p>useroni</p>
             {% else %}

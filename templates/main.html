@@ -59,14 +59,30 @@
 			<p>Dolor sit amet, consetetur sadipscing elitr, seddiam nonumy eirmod tempor. invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur <br /></p>
 			<img src="{% static "media/images/title3.gif" %}" alt="" width="540" height="26" class="pad25" />
 			<div class="stuff">
-				<div class="item">
-                    {% for tovar in tovar_list %}
 
-                        <span><a href="/view/{{ tovar.id }}">{{ tovar.name }}</a></span>
+               {% for tovar in tovar_list %}
+                    ttt:{{ tovar_bets }}
 
-                    {% endfor %}
 
-				</div>
+                    <div class="item">
+                        <div style="float: left">
+                        <span><a class ="name" href="/view/{{ tovar.id }}">{{ tovar.name }}</a></span>
+                        <span ><img src ="{% static "media/"%}{{ tovar.pictures_set.all|first }}" width="120"></span>
+                        <span>{{ tovar.price }} грн.</span>
+
+                        </div>
+                        <br />
+                        <div style="float: left">
+                        <form action="" method="post" name="BET">
+                        {% csrf_token %}
+                        <input type="submit" value="БРОНЬ">
+                        </form>
+                        </div>
+                    </div>
+
+               {% endfor %}
+
+
                 <div class="item">
 					<img src="{% static "media/images/pic1.jpg" %}" alt="" width="124" height="90" />
 					<a href="index2.html" class="name">Name Product</a>

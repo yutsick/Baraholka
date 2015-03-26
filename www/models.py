@@ -101,6 +101,9 @@ class Pictures(models.Model):
     get_thumbnail_html.short_description = u'Мsниатюра'
     get_thumbnail_html.allow_tags = True
 
+    def __unicode__(self):
+        return u'%s' % self.pic_path
+
 
 class Comments(models.Model):
     tovar = models.ForeignKey(Tovar)
@@ -113,6 +116,13 @@ class Bets(models.Model):
     user = models.ForeignKey(User)
     bet_date = models.DateTimeField(auto_now_add=True)
     tovar = models.ForeignKey(Tovar)
+
+    class Meta:
+        unique_together = (('user','tovar'),)
+
+    def __int__(self):
+        return self.tovar_id
+
 
 
 # Create your models here.
