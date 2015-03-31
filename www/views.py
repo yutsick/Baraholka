@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, REDIRECT_FIELD_NAME
 from django.http import HttpResponseRedirect
 from www.forms import RegForm
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.decorators import login_required
 #from www.models import Users, Rating, UserActivity, Categories, Tovar, Pictures, Comments, Bets
 from www.models import Categories, Tovar, Bets
 
@@ -19,7 +19,7 @@ def main(request, cat='0'):
     cat_list = Categories.objects.all()
     usr='' # повідомлення про кривий логін. треба якось покращити
     #обрроблка форми логіну
-   # bet = Bets.objects.filter(user = request.user)
+
     if 'RR' in  request.POST:
         username=request.POST['username']
         password=request.POST['password']
@@ -58,16 +58,25 @@ def main(request, cat='0'):
 def tovar(request, tovar_id='0'):
     usr=''
     cat_list = Categories.objects.all()
-    bets = Bets.objects.filter(user = request.user).values('tovar').iterator()
+
+    if request.user.is_authenticated():
+        bets = Bets.objects.filter(user = request.user).values('tovar')
+        bet = []
+        for i in range(len(bets)):
+            bet.append(bets[i]['tovar'])
+    else:
+        bet = None
+
 
     if 'RR' in  request.POST:
-
+        redirect_to = request.get_full_path()
         username=request.POST['username']
         password=request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
+                return HttpResponseRedirect(redirect_to)
             else:
                 usr = 'dasvados'
         else:
@@ -76,7 +85,7 @@ def tovar(request, tovar_id='0'):
     try:
         tovar_id = int(tovar_id)
         tovar_page = Tovar.objects.get(id=tovar_id)
-        return TemplateResponse(request, 'tovar.html', {'tovar': tovar_page,'err':usr, 'cat_list':cat_list, 'tovar_bets':bets})
+        return TemplateResponse(request, 'tovar.html', {'tovar': tovar_page,'err':usr, 'cat_list':cat_list, 'tovar_bets':bet})
     except Tovar.DoesNotExist:
         return redirect('/')
 

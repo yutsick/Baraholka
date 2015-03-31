@@ -13,18 +13,27 @@
             <span style="padding: 10px"><img src ="{% static "media/"%}{{ picture }}" width="180"></span>
 
         {% endfor %}
-            {% if user.is_authenticated %}
-                <p>useroni</p>
-            {% else %}
-                <p>Nema user</p>
-            {% endif %}
-            ttt:{{ tovar_bets }}
+
+            <p><div style="float: left">
+                            <form action="" method="post" name="BET">
+                        {% csrf_token %}
+                                {% if tovar.id in tovar_bets %}
+                                    <input type="submit" value="ЮЖ">
+                                {% else %}
+                               <input type="submit" value="БРОНЬ">
+                                {% endif %}
+                        </form>
+                        </div>
+
+
+            </p>
             <div class="stuff">
 		    	<img src="{% static "media/images/title3.gif"%}" alt="" width="540" height="26" class="pad25" />
 		    	<span>{{ tovar.price }}</span>
         	</div>
 
 		</div>
+
 	  </div>
     {% endblock %}
 

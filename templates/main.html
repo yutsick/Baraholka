@@ -68,20 +68,19 @@
 
                         </div>
                         <br />
+                        {% block BETS %}
                         <div style="float: left">
-                        <form action="" method="post" name="BET">
+                            <form action="" method="post" name="BET">
                         {% csrf_token %}
                                 {% if tovar.id in tovar_bets %}
                                     <input type="submit" value="ЮЖ">
                                 {% else %}
                                <input type="submit" value="БРОНЬ">
                                 {% endif %}
-
-
-
                         </form>
                         </div>
-                    </div>
+                        {% endblock %}
+                         </div>
 
                {% endfor %}
 
