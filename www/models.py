@@ -120,8 +120,8 @@ class Bets(models.Model):
     class Meta:
         unique_together = (('user','tovar'),)
 
-    def __int__(self):
-        return self.tovar_id
+    def __unicode__(self):
+        return u'%d' % self.tovar_id
 
 
 

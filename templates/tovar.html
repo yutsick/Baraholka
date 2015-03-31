@@ -8,6 +8,7 @@
 	  	<div id="content">
 			<h3>Опис товару</h3>
 			<p>{{ tovar.description }} <br /></p>
+
             {% for picture in tovar.pictures_set.all %}
             <span style="padding: 10px"><img src ="{% static "media/"%}{{ picture }}" width="180"></span>
 
@@ -17,7 +18,7 @@
             {% else %}
                 <p>Nema user</p>
             {% endif %}
-
+            ttt:{{ tovar_bets }}
             <div class="stuff">
 		    	<img src="{% static "media/images/title3.gif"%}" alt="" width="540" height="26" class="pad25" />
 		    	<span>{{ tovar.price }}</span>

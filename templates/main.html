@@ -59,12 +59,8 @@
 			<p>Dolor sit amet, consetetur sadipscing elitr, seddiam nonumy eirmod tempor. invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur <br /></p>
 			<img src="{% static "media/images/title3.gif" %}" alt="" width="540" height="26" class="pad25" />
 			<div class="stuff">
-
-               {% for tovar in tovar_list %}
-                    ttt:{{ tovar_bets }}
-
-
-                    <div class="item">
+                   {% for tovar in tovar_list %}
+                     <div class="item">
                         <div style="float: left">
                         <span><a class ="name" href="/view/{{ tovar.id }}">{{ tovar.name }}</a></span>
                         <span ><img src ="{% static "media/"%}{{ tovar.pictures_set.all|first }}" width="120"></span>
@@ -75,7 +71,14 @@
                         <div style="float: left">
                         <form action="" method="post" name="BET">
                         {% csrf_token %}
-                        <input type="submit" value="БРОНЬ">
+                                {% if tovar.id in tovar_bets %}
+                                    <input type="submit" value="ЮЖ">
+                                {% else %}
+                               <input type="submit" value="БРОНЬ">
+                                {% endif %}
+
+
+
                         </form>
                         </div>
                     </div>

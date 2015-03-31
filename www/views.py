@@ -43,21 +43,23 @@ def main(request, cat='0'):
         tovar_list = Tovar.objects.filter(category_id=cat)
 
 
-
     if request.user.is_authenticated():
-        bets = Bets.objects.filter(user = request.user)
+        bets = Bets.objects.filter(user = request.user).values('tovar')
+        bet = []
+        for i in range(len(bets)):
+            bet.append(bets[i]['tovar'])
+    else:
+        bet = None
 
-
-
-
-
-    return TemplateResponse(request, 'main.html', {'tovar_list': tovar_list, 'cat_list':cat_list, 'err':usr, 'tovar_bets':bets})
+    return TemplateResponse(request, 'main.html', {'tovar_list': tovar_list, 'cat_list':cat_list, 'err':usr, 'tovar_bets':bet})
 
 
 
 def tovar(request, tovar_id='0'):
     usr=''
     cat_list = Categories.objects.all()
+    bets = Bets.objects.filter(user = request.user).values('tovar').iterator()
+
     if 'RR' in  request.POST:
 
         username=request.POST['username']
@@ -74,7 +76,7 @@ def tovar(request, tovar_id='0'):
     try:
         tovar_id = int(tovar_id)
         tovar_page = Tovar.objects.get(id=tovar_id)
-        return TemplateResponse(request, 'tovar.html', {'tovar': tovar_page,'err':usr, 'cat_list':cat_list})
+        return TemplateResponse(request, 'tovar.html', {'tovar': tovar_page,'err':usr, 'cat_list':cat_list, 'tovar_bets':bets})
     except Tovar.DoesNotExist:
         return redirect('/')
 
