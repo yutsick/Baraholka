@@ -17,7 +17,7 @@
 
 {% block header %}
 	<div id="header">
-		<a href="index.html" class="float"><img src="{% static "media/images/logo.jpg" %}" alt="" width="171" height="73" /></a>
+		<a href="/" class="float"><img src="{% static "media/images/logo.jpg" %}" alt="" width="171" height="73" /></a>
 
 	<!--  <div class="topblock1">
 			Currency:<br /><select><option>US Dollar</option></select>
@@ -48,13 +48,29 @@
 			<li><a href="index2.html"><img src="{% static "media/images/but9.gif" %}" alt="" width="71" height="29" /></a></li>
 		</ul>
 	</div>
+    <br />
+    <div>
+        {% if messages %}
+            <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+        </li>
+        {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 {% endblock %}
 
 	<div id="container">
+
     {% block center %}
 	  <div id="center" class="column">
 	  	<a href="#" class="banner"><img src="{% static "media/images/bigbanner.jpg" %}" alt="" width="572" height="236" /></a><br />
-	  	<div id="content">
+
+
+
+          <div id="content">
 			<img src="{% static "media/images/title2.gif" %}" alt="" width="540" height="29" /><br />
 			<p>Dolor sit amet, consetetur sadipscing elitr, seddiam nonumy eirmod tempor. invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur <br /></p>
 			<img src="{% static "media/images/title3.gif" %}" alt="" width="540" height="26" class="pad25" />
@@ -68,19 +84,23 @@
 
                         </div>
                         <br />
-                        {% block BETS %}
-                        <div style="float: left">
+
+                        <div style="float: left; width: 100%">
                             <form action="" method="post" name="BET">
                         {% csrf_token %}
                                 {% if tovar.id in tovar_bets %}
-                                    <input type="submit" value="ЮЖ">
+                                    <h3><span style="color: mediumseagreen">Заброньовано</span></h3>
                                 {% else %}
-                               <input type="submit" value="БРОНЬ">
+                               <span><input type="submit" value="БРОНЬ" name="BET"></span>
                                 {% endif %}
+                            <input type="hidden" name="tovar_id" value="{{ tovar.id }}">
                         </form>
+
+
                         </div>
-                        {% endblock %}
+                        <div style="color:seagreen"><p>Всього броней: {{ tovar.bets_set.all.count }}</p></div>
                          </div>
+
 
                {% endfor %}
 

@@ -1,5 +1,5 @@
 # coding: utf-8
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponse
 
 from django.template.response import TemplateResponse
 from django.contrib.auth import authenticate, login, REDIRECT_FIELD_NAME
@@ -9,6 +9,7 @@ from django.contrib import auth
 #from django.contrib.auth.decorators import login_required
 #from www.models import Users, Rating, UserActivity, Categories, Tovar, Pictures, Comments, Bets
 from www.models import Categories, Tovar, Bets
+from django.contrib import messages
 
 
 
@@ -18,7 +19,7 @@ def main(request, cat='0'):
     cat = int(cat)
     cat_list = Categories.objects.all()
     usr='' # повідомлення про кривий логін. треба якось покращити
-    #обрроблка форми логіну
+    #обрробка форми логіну
 
     if 'RR' in  request.POST:
         username=request.POST['username']
@@ -33,6 +34,17 @@ def main(request, cat='0'):
                 usr = 'dasvados'
         else:
             usr = 'login invalid'
+
+    if 'BET' in request.POST: #треба зробити одну перевірку на РОСТ і обєднат умови перевірки - шо там саме відіслано
+        redirect_to = request.get_full_path()
+        if not request.user.is_authenticated():
+            messages.info(request,"Login!!!")
+            return HttpResponseRedirect(redirect_to)
+        else:
+            Bets(user=request.user, tovar=Tovar.objects.get(id=request.POST['tovar_id'])).save()
+            return HttpResponseRedirect(redirect_to)
+
+
 
     #вивід списку категорій
     try:
@@ -57,6 +69,7 @@ def main(request, cat='0'):
 
 def tovar(request, tovar_id='0'):
     usr=''
+
     cat_list = Categories.objects.all()
 
     if request.user.is_authenticated():
@@ -66,6 +79,23 @@ def tovar(request, tovar_id='0'):
             bet.append(bets[i]['tovar'])
     else:
         bet = None
+
+    if 'BET' in request.POST: #треба зробит иоджну перевірку на РОСТ і обєднат умови перевірки - шо там саме відіслано
+        redirect_to = request.get_full_path()
+        if not request.user.is_authenticated():
+            messages.info(request,"Login!!!")
+            return HttpResponseRedirect(redirect_to)
+        else:
+
+            Bets(user=request.user, tovar=Tovar.objects.get(id=tovar_id)).save()
+
+            return HttpResponseRedirect(redirect_to)
+
+    if 'BET_DEL' in request.POST:
+        Bets.objects.filter(user=request.user, tovar=tovar_id).delete()
+        redirect_to = request.get_full_path()
+        messages.info(request,"GOOD DELETE")
+        return HttpResponseRedirect(redirect_to)
 
 
     if 'RR' in  request.POST:

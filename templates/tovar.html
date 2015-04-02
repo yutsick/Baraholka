@@ -14,19 +14,22 @@
 
         {% endfor %}
 
-            <p><div style="float: left">
+            <p><div style="float: left; width: 100%; margin-bottom: 10px;">
                             <form action="" method="post" name="BET">
                         {% csrf_token %}
                                 {% if tovar.id in tovar_bets %}
-                                    <input type="submit" value="ЮЖ">
+                                    <h3><span style="color: mediumseagreen">Заброньовано</span></h3>
+                                    <br />
+                                    <span><input type="submit" value="Зняти бронь" name="BET_DEL"></span>
                                 {% else %}
-                               <input type="submit" value="БРОНЬ">
+                               <input type="submit" value="БРОНЬ" name="BET">
                                 {% endif %}
+
                         </form>
                         </div>
+                 </p>
 
-
-            </p>
+            <div style="color:seagreen; margin-top: 20px">Всього броней: {{ tovar.bets_set.all.count }}</div>
             <div class="stuff">
 		    	<img src="{% static "media/images/title3.gif"%}" alt="" width="540" height="26" class="pad25" />
 		    	<span>{{ tovar.price }}</span>
